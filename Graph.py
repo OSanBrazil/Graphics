@@ -5,8 +5,8 @@ import pygame
 from sys import exit
 
 # Seta as variáveis
-ScreenWidth = 720
-ScreenHeight = 480
+ScreenWidth = 1024
+ScreenHeight = 760
 fps_rate = 60
 frame_counter = 0
 
@@ -25,20 +25,22 @@ while True:
     PI2 = PI * 2
     xcentral = ScreenWidth / 2
     ycentral = ScreenHeight / 2
-    tamanho = 200
+    tamanho = ScreenHeight * .4
     frequencia = 1
     x_ant = xcentral
     y_ant = ycentral
     x_init = 0
     y_init = 0
-    sides = 360 / 32
+    sides = 5
+    sides = 360/sides
     deg = 0
     while deg <= 360:
         rad = deg * PI2 / 360
         x = xcentral + math.sin(rad) * tamanho
         y = ycentral + math.cos(rad) * tamanho
         if y_ant != ycentral:
-            pygame.draw.line(screen, [255, 255, 255], [x_ant, y_ant], [x, y])
+            pygame.draw.line(screen, (16, 255, 16), (x_ant, y_ant), (x, y))
+            pygame.draw.line(screen, (255,16,16),(xcentral,ycentral),(x,y))
             if x_init == 0:
                 x_init = x_ant
                 y_init = y_ant
