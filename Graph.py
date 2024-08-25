@@ -41,11 +41,11 @@ def desenha():
     deg = init_deg
     while deg <= init_deg + 360:
         rad = deg * PI2 / 360
-        x = xcentral + math.sin(rad) * tamanho_atual
-        y = ycentral + math.cos(rad) * tamanho_atual
+        x = xcenter + math.sin(rad) * tamanho_atual
+        y = ycenter + math.cos(rad) * tamanho_atual
         if y_ant != ycentral:
             pygame.draw.line(screen, cor_da_borda, (x_ant, y_ant), (x, y), 4)
-            pygame.draw.line(screen, cor_da_linha, (xcentral, ycentral), (x, y), 4)
+            pygame.draw.line(screen, cor_da_linha, (xcenter, ycenter), (x, y), 4)
             if x_init == 0:
                 x_init = x_ant
                 y_init = y_ant
@@ -53,7 +53,7 @@ def desenha():
         y_ant = y
         deg += sides
     pygame.draw.line(screen, cor_da_borda, [x_ant, y_ant], [x_init, y_init], 4)
-    pygame.draw.line(screen, cor_da_linha, (xcentral, ycentral), (x_init, y_init), 4)
+    pygame.draw.line(screen, cor_da_linha, (xcenter, ycenter), (x_init, y_init), 4)
 
 
 while True:
@@ -74,6 +74,8 @@ while True:
     if init_deg < 360:
         init_deg += fps_rate * 3 / fps_rate
         tamanho_atual = tamanho * math.sin(init_deg * PI / 360)
+        xcenter = xcentral + math.cos(init_deg / 360 * PI2 * 2) * tamanho / 8
+        ycenter = ycentral + math.cos(init_deg / 360 * PI2 * 4) * tamanho / 8
         desenha()
 
     if init_deg >= 360:
