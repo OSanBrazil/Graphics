@@ -26,13 +26,15 @@ frequencia = 1
 init_deg = 0
 sides_glob = 3
 sides_inc = 1
+cor_da_superficie = [(255, 1, 1), (1, 255, 1), (1, 1, 255), (255, 255, 1), (1, 255, 255), (255, 1, 255)]
 cor_da_borda = (255, 1, 1)
-cor_da_linha = (1, 1, 255)
+cor_da_linha = (255, 255, 255)
 
 
 # Functions
 
 def desenha():
+    cn = 0
     x_ant = xcentral
     y_ant = ycentral
     x_init = 0
@@ -41,19 +43,25 @@ def desenha():
     deg = init_deg
     while deg <= init_deg + 360:
         rad = deg * PI2 / 360
-        x = xcenter + math.sin(rad) * tamanho_atual
-        y = ycenter + math.cos(rad) * tamanho_atual
+        x = xcentral + math.sin(rad) * tamanho_atual
+        y = ycentral + math.cos(rad) * tamanho  # _atual
         if y_ant != ycentral:
-            pygame.draw.line(screen, cor_da_borda, (x_ant, y_ant), (x, y), 4)
-            pygame.draw.line(screen, cor_da_linha, (xcenter, ycenter), (x, y), 4)
+            pygame.draw.polygon(screen, cor_da_superficie[cn], [(x_ant, y_ant), (x, y), (xcentral, ycentral)])
+            pygame.draw.line(screen, cor_da_borda, (x_ant, y_ant), (x, y), 5)
+            pygame.draw.line(screen, cor_da_linha, (xcentral, ycentral), (x, y), 5)
+
             if x_init == 0:
                 x_init = x_ant
                 y_init = y_ant
         x_ant = x
         y_ant = y
         deg += sides
-    pygame.draw.line(screen, cor_da_borda, [x_ant, y_ant], [x_init, y_init], 4)
-    pygame.draw.line(screen, cor_da_linha, (xcenter, ycenter), (x_init, y_init), 4)
+        cn += 1
+        if cn >= len(cor_da_superficie):
+            cn = 0
+    pygame.draw.polygon(screen, cor_da_superficie[cn], [(x_ant, y_ant), (x_init, y_init), (xcentral, ycentral)])
+    pygame.draw.line(screen, cor_da_borda, [x_ant, y_ant], [x_init, y_init], 5)
+    pygame.draw.line(screen, cor_da_linha, (xcentral, ycentral), (x_init, y_init), 5)
 
 
 while True:
@@ -74,14 +82,12 @@ while True:
     if init_deg < 360:
         init_deg += fps_rate * 3 / fps_rate
         tamanho_atual = tamanho * math.sin(init_deg * PI / 360)
-        xcenter = xcentral + math.cos(init_deg / 360 * PI2 * 2) * tamanho / 8
-        ycenter = ycentral + math.cos(init_deg / 360 * PI2 * 4) * tamanho / 8
         desenha()
 
     if init_deg >= 360:
         init_deg = 0
         sides_glob += sides_inc
-        if sides_glob > 15 or sides_glob < 4:
+        if sides_glob > 11 or sides_glob < 4:
             sides_inc = -sides_inc
 
     # Atualiza tudo
